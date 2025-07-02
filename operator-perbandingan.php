@@ -1,18 +1,35 @@
 <?php
-$x = 25;
-$y = 15;
 
-$samadengan = $x == $y;
-$tidaksama = $x != $y;
-$lebih_kecil = $x < $y;
-$lebih_besar = $x > $y;
-$lebih_kecil_samadengan = $x <= $y;
-$lebih_besar_samadengan = $x >= $y;
+//if/else
+$nilai = 75;
 
-echo "Hasil perbandingan satu adalah $samadengan <br>";
-echo "Hasil perbandingan dua adalah $tidaksama <br>";
-echo "Hasil perbandingan tiga adalah $lebih_kecil <br>";
-echo "Hasil perbandingan empat adalah $lebih_besar <br>";
-echo "Hasil perbandingan lima adalah $lebih_kecil_samadengan <br>";
-echo "Hasil perbandingan enam adalah $lebih_besar_samadengan";
+if ($nilai >= 80) {
+    echo "Bagus sekali";    
+} elseif ($nilai >= 70) {
+    echo "Baik";
+} else {
+    echo "Perlu belajar lagi";
+}
+
+echo "<br><br>";
+
+//Switch
+$hari = "Rabu";
+echo "Hari ini: $hari =";
+switch ($hari) {
+    case "Selasa":
+        echo "Semangat belajar";
+        break;
+        case "Kamis":
+            echo "Lusa weekend!!!";
+            break;
+            default:
+            echo "Bad day👎";
+}
+
+echo "<br><br>";
+
+//Ternary
+$umur = 12;
+echo "Status umur: " . (($umur >= 20) ? "Dewasa" : "Remaja");
 ?>
