@@ -1,0 +1,104 @@
+<!DOCTYPE html> <!-- Struktur HTML -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="latihan-css.css">
+    <title>Latihan HTML</title>
+</head>
+<body>
+    
+    <!-- Sematic meaning: Header -->
+     <header>
+        <!-- Tag html: Heading -->
+        <h1>Selamat datang di website latihan</h1>
+        <h1>Belajar dasar HTML untuk PKL</h1>
+     </header>
+
+    <!-- Sematic meaning: Navigation -->
+     <nav>
+        <!-- Tag html: ul,li,a -->
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+     </nav>
+
+     <!-- Sematic meaning: Main content -->
+      <main>
+        <section>
+            <!-- Tag html: p, img -->
+            <p>Disini kita belajar tentang struktur dasar HTML.</p>
+            <img src="https://via.placeholder.com/150" alt="Contoh Gambar">
+        </section>
+
+        <section>
+            <!-- Tag html: table -->
+            <h2>Tag Table</h2>
+            <table border="1">
+                <tr>
+                    <th>Nama</th>
+                    <th>Umur</th>
+                </tr>
+                <tr>
+                    <td>Kalief</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>Athalla</td>
+                    <td>17</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <!-- Tag html: iframe -->
+             <h2>Iframe</h2>
+             <iframe width="300" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Contoh Iframe"></iframe>
+        </section>
+
+        <!-- TAG HTML: form, input, select, textarea, button -->
+        <!-- HTML ATTRIBUTE: id, name, placeholder -->
+       <section>
+        <h2>Form Registrasi</h2>
+        <form action="#" method="post">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan nama anda"><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Masukkan email anda"><br><br>
+
+            <label for="gender">Jenis Kelamin:</label>
+            <select id="gender" name="gender">
+            <option value="laki">Laki-laki</option>
+            <option value="perempuan">Perempuan</option>
+            </select><br><br>
+
+            <label for="alamat">Alamat:</label><br>
+            <textarea id="alamat" name="alamat" rows="4" cols="30" placeholder="Masukkan alamat anda"></textarea><br><br>
+
+            <button type="submit">Daftar</button>
+        </form>
+        </section>
+        
+        <!-- Tag html: div -->
+         <section>
+            <div id="kotak1">
+                <p>Ini paragraf dalam <code>div</code> dengan <strong>id="kotak1"</strong></p>
+            </div>
+         </section>
+
+          <!-- DIV dengan class -->
+            <div class="box">
+                <p>Ini paragraf dalam <code>div</code> dengan <strong>class="box"</strong></p>
+            </div>
+         </section>
+      </main>
+
+       <!-- SEMANTIC: FOOTER -->
+        <footer>
+            <p>&copy; 2025 Website Latihan PKL. All rights reserved.</p>
+        </footer>
+</body>
+</html>

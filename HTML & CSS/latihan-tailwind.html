@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <header class="bg-indigo-600 text-white p-6 text-center">
+        <h1 class="text-3xl font-bold">Selamat datang di website latihan</h1>
+    </header>
+
+    <section class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6 mt-6 space-y-4">
+        <h2 class="text-xl font-semibold text-indigo-700">👋 Selamat datang!</h2>
+        <p class="text-sm"> Ini adalah latihan awal menggunakan Tailwind CSS.  
+         Kita akan mencoba berbagai komponen seperti tombol, form, dan layout.</p>
+
+        <button class="bg-indigo-500 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700">Klik aku!</button>
+    </section>
+
+    <section class="max-w-md mx-auto bg-white rounded shadow p-6 mt-10">
+        <h2 class="text-lg font-semibold text-indigo-600 mb-4">Form Registrasi 📝</h2>
+        <form action="#" method="POST" class="space-y-4">
+            <div>
+                <label for="name" class="blockfont-medium mb-1">Nama</label>
+                <input type="text" id="nama" name="nama" placeholder="masukan nama"
+                       class="w-full border border-gray-300 p-2 rounded">
+            </div>
+
+            <div>
+                <label for="email" class="block font-medium mb-1">Email</label>
+                <input type="email" id="email" name="email" placeholder="masukan email"
+                       class="w-full border border-gray-300 p-2 rounded">
+            </div>
+
+             <div>
+                <label for="pesan" class="block font-medium mb-1">Pesan</label>
+                <textarea id="pesan" name="pesan" placeholder="masukan pesan"
+                          class="w-full border border-gray-300 p-2 rounded"></textarea>
+            </div>
+
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Kirim</button>
+            </form>
+     </section>
+
+     <footer class="text-center text-gray-600 text-sm mt-10 mb-4">
+        &copy; 2025 | Latihan Tailwind PKL
+     </footer>
+</body>
+</html>
