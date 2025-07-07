@@ -1,27 +1,26 @@
 <?php
-echo "=== DAFTAR HARGA BBM ===\n";
-echo "1. Pertamax - Rp 12.500\n";
-echo "2. Pertalite - Rp 10.000\n";
-echo "3. Dexlite - Rp 13.000\n";
-echo "4. Solar - Rp 6.000\n";
+require 'data_bbm.php';
 
-$kembalian = 0;
-$liter = 0;
-
-$hargaBBM = [
-    "Pertamax" => 12500,
-    "Pertalite" => 10000,
-    "Dexlite" => 13000,
-    "Solar" => 6000
-];
-
-$jenis = readline("Masukan jenis BBM (misal: Pertamax):");
-if (!array_key_exists($jenis, $hargaBBM)) {
-    echo "Jenis BBM tidak valid. Silakan pilih dari daftar yang tersedia.\n";
-    exit;
+function formatRupiah($angka) {
+    return "Rp " . number_format($angka, 0, ',', '.');
 }
 
-//Validasi input
+do{
+echo "=== DAFTAR HARGA BBM ===\n";
+foreach ($hargaBBM as $key => $data) {
+    $hargaFormatted = formatRupiah($data['harga']);
+    echo "$key. {$data['nama']} - $hargaFormatted\n";
+}
+do{
+    $pilihan = readline("Masukan nomor pilihan BBM (1-4): ");
+    if (!is_numeric($pilihan) || !array_key_exists($pilihan, $hargaBBM)) {
+        echo "Input tidak valid. Pilih antara 1 sampai 4.\n";
+    }
+} while (!array_key_exists($pilihan, $hargaBBM));
+
+$jenis = $hargaBBM[$pilihan]['nama'];
+$harga = $hargaBBM[$pilihan]['harga'];
+
 do{
     $beli = readline("Masukan nominal pembelian BBM:");
     if (!is_numeric($beli)) {
@@ -41,14 +40,20 @@ if ($jumlahUang < $beli){
     exit;
 }
 
+$kembalian = 0;
+$liter = 0;
+
 $kembalian = $jumlahUang - $beli;
-$liter = $beli / $hargaBBM[$jenis];
+$liter = $beli / $harga;
 
 echo "=== Struk Pembelian BBM ===\n";
-echo "Jenis BBM : $jenis\n";
-echo "Harga perliter : Rp " . number_format($hargaBBM[$jenis], 0, ',', '.') . "\n";
-echo "Nominal beli : Rp " . number_format($beli, 0, ',', '.') . "\n";
-echo "Liter dapat : " . number_format($liter, 1, ',', '.') . " liter\n";
-echo "Uang dibayar : Rp " . number_format($jumlahUang, 0, ',', '.') . "\n";
-echo "Kembalian : Rp " . number_format($kembalian, 0, ',', '.') . "\n";
+echo "Jenis BBM        : $jenis\n";
+echo "Harga perliter   : " . formatRupiah($harga) . "\n";
+echo "Nominal beli     : " . formatRupiah($beli) . "\n";
+echo "Liter dapat      : " . number_format($liter, 1, ',', '.') . " liter\n";
+echo "Uang dibayar     : " . formatRupiah($jumlahUang) . "\n";
+echo "Kembalian        : " . formatRupiah($kembalian) . "\n";
+
+$lanjut = readline("\nIngin transaksi lagi? (y/n): ");
+} while (strtolower($lanjut) == 'y');
 ?>
