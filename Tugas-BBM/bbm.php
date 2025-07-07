@@ -1,5 +1,5 @@
 <?php
-require 'data_bbm.php';
+require 'data-bbm.php';
 
 function formatRupiah($angka) {
     return "Rp " . number_format($angka, 0, ',', '.');
