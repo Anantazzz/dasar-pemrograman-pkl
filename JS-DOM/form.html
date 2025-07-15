@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form DOM</title>
+    <style>
+        body{ font-family: sans-serif; padding: 20px }
+        #hasil { margin-top: 20px; font-size: 1.2em; color: teal; }
+    </style>
+</head>
+<body>
+
+    <h2>Form Interaktif</h2>
+
+    <form id="formHobi">
+        <label>Nama:
+            <input type="text" id="nama" required>
+        </label><br><br>
+        <label>Hobi:
+            <input type="text" id="hobi" required>
+        </label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="hasil"></div>
+
+    <script src="form.js"></script>
+</body>
+</html>
