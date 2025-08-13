@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\ManagementController;
-use App\Http\Controllers\RegistrasiController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,9 +21,18 @@ use App\Http\Controllers\RegistrasiController;
 */
 
 Route::get('/', function () {
-    return view('welcome'); 
-})->name('dashboard');
+    return view('welcome');
+});
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+//Form Registrasi
+Route::get('/users', [UserController::class, 'index'])->name('admin.index');
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.edit');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.update');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.destroy');
 
 //Form Pembayaran
 Route::get('/form-pembayaran', [PembayaranController::class, 'formAdmin'])->name('admin.pembayaran.form-pembayaran');
@@ -69,10 +79,5 @@ Route::get('/form-management', [ManagementController::class, 'formAdmin'])->name
 Route::post('/admin/management/store', [ManagementController::class, 'store'])->name('admin.management.store');
 Route::delete('/admin/management/delete/{id}', [ManagementController::class, 'destroy'])->name('admin.management.delete');
 
-//Form Registrasi Pengguna
-Route::get('/form-registrasi', [RegistrasiController::class, 'formAdmin'])->name('admin.registrasi.form-registrasi');
-Route::get('/form-registrasi/create', [RegistrasiController::class, 'create'])->name('admin.registrasi.create-registrasi');
-Route::post('/admin/registrasi/form-registrasi/store', [RegistrasiController::class, 'store'])->name('admin.registrasi.store');
-Route::get('/admin/registrasi/form-registrasi/{id}/edit', [RegistrasiController::class, 'edit'])->name('admin.registrasi.form-registrasi.edit');
-Route::put('/admin/registrasi/form-registrasi/{id}', [RegistrasiController::class, 'update'])->name('admin.registrasi.form-registrasi.update');
-Route::delete('/admin/registrasi/form-registrasi/{id}', [RegistrasiController::class, 'destroy'])->name('admin.registrasi.form-registrasi.destroy');
+require __DIR__.'/auth.php';
+
