@@ -20,6 +20,7 @@ class CreatePortofolioItemTable extends Migration
             $table->text('deskripsi_singkat');
             $table->string('url_proyek')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

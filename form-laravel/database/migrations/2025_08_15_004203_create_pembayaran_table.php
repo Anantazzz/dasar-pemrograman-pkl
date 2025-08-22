@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePortofolioGambar1Table extends Migration
+class CreatePembayaranTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreatePortofolioGambar1Table extends Migration
      */
     public function up()
     {
-        Schema::create('portofolio_gambar1', function (Blueprint $table) {
+        Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('portofolio_id')->constrained('portofolio_satu')->onDelete('cascade');
-            $table->string('file_path');
+            $table->string('proyek');
+            $table->unsignedInteger('jumlah');
+            $table->string('metode', 100);
+            $table->tinyInteger('setuju')->nullable()->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +31,6 @@ class CreatePortofolioGambar1Table extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portofolio_gambar1');
+        Schema::dropIfExists('pembayaran');
     }
 }

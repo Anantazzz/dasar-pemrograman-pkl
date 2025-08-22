@@ -35,49 +35,70 @@ Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.update
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.destroy');
 
 //Form Pembayaran
-Route::get('/form-pembayaran', [PembayaranController::class, 'formAdmin'])->name('admin.pembayaran.form-pembayaran');
-Route::get('/form-pembayaran/create', [PembayaranController::class, 'create'])->name('admin.pembayaran.create-pembayaran');
-Route::post('/admin/pembayaran/form-pembayaran/store', [PembayaranController::class, 'store'])->name('admin.pembayaran.store');
-Route::get('/admin/pembayaran/form-pembayaran/{id}/edit', [PembayaranController::class, 'edit'])->name('admin.pembayaran.form-pembayaran.edit');
-Route::put('/admin/pembayaran/form-pembayaran/{id}', [PembayaranController::class, 'update'])->name('admin.pembayaran.form-pembayaran.update');
-Route::delete('/admin/pembayaran/form-pembayaran/{id}', [PembayaranController::class, 'destroy'])->name('admin.pembayaran.form-pembayaran.destroy');
+Route::resource('pembayaran', PembayaranController::class)->names([
+    'index'   => 'admin.pembayaran.index',
+    'create'  => 'admin.pembayaran.create',
+    'store'   => 'admin.pembayaran.store',
+    'show'    => 'admin.pembayaran.show',
+    'edit'    => 'admin.pembayaran.edit',
+    'update'  => 'admin.pembayaran.update',
+    'destroy' => 'admin.pembayaran.destroy',
+]);
 
-//Form pengajuan penawaran
-Route::get('/form-pengajuan', [PengajuanController::class, 'formAdmin'])->name('admin.pengajuan.form-pengajuan');
-Route::get('/form-pengajuan/create', [PengajuanController::class, 'create'])->name('admin.pengajuan.create-pengajuan');
-Route::post('/admin/pengajuan/form-pengajuan/store', [PengajuanController::class, 'store'])->name('admin.pengajuan.store');
-Route::get('/admin/pengajuan/form-pengajuan/{id}/edit', [PengajuanController::class, 'edit'])->name('admin.pengajuan.form-pengajuan.edit');
-Route::put('/admin/pengajuan/form-pengajuan/{id}', [PengajuanController::class, 'update'])->name('admin.pengajuan.form-pengajuan.update');
-Route::delete('/admin/pengajuan/form-pengajuan/{id}', [PengajuanController::class, 'destroy'])->name('admin.pengajuan.form-pengajuan.destroy');
+//Form Pengajuan
+Route::resource('pengajuan', PengajuanController::class)->names([
+    'index'   => 'admin.pengajuan.index',
+    'create'  => 'admin.pengajuan.create',
+    'store'   => 'admin.pengajuan.store',
+    'show'    => 'admin.pengajuan.show',
+    'edit'    => 'admin.pengajuan.edit',
+    'update'  => 'admin.pengajuan.update',
+    'destroy' => 'admin.pengajuan.destroy',
+]);
 
-//Form Posting Proyek
-Route::get('/form-proyek', [ProyekController::class, 'formAdmin'])->name('admin.proyek.form-proyek');
-Route::get('/form-proyek/create', [ProyekController::class, 'create'])->name('admin.proyek.create-proyek');
-Route::post('/admin/proyek/form-proyek/store', [ProyekController::class, 'store'])->name('admin.proyek.store');
-Route::get('/admin/proyek/form-proyek/{id}/edit', [ProyekController::class, 'edit'])->name('admin.proyek.form-proyek.edit');
-Route::put('/admin/proyek/form-proyek/{id}', [ProyekController::class, 'update'])->name('admin.proyek.form-proyek.update');
-Route::delete('/admin/proyek/form-proyek/{id}', [ProyekController::class, 'destroy'])->name('admin.proyek.form-proyek.destroy');
+//Form Proyek
+Route::resource('proyek', ProyekController::class)->names([
+    'index'   => 'admin.proyek.index',
+    'create'  => 'admin.proyek.create',
+    'store'   => 'admin.proyek.store',
+    'show'    => 'admin.proyek.show',
+    'edit'    => 'admin.proyek.edit',
+    'update'  => 'admin.proyek.update',
+    'destroy' => 'admin.proyek.destroy',
+]);
 
 //Form Ulasan
-Route::get('/form-ulasan', [UlasanController::class, 'formAdmin'])->name('admin.ulasan.form-ulasan');
-Route::get('/form-ulasan/create', [UlasanController::class, 'create'])->name('admin.ulasan.create-ulasan');
-Route::post('/admin/ulasan/form-ulasan/store', [UlasanController::class, 'store'])->name('admin.ulasan.store');
-Route::get('/admin/ulasan/form-ulasan/{id}/edit', [UlasanController::class, 'edit'])->name('admin.ulasan.form-ulasan.edit');
-Route::put('/admin/ulasan/form-ulasan/{id}', [UlasanController::class, 'update'])->name('admin.ulasan.form-ulasan.update');
-Route::delete('/admin/ulasan/form-ulasan/{id}', [UlasanController::class, 'destroy'])->name('admin.ulasan.form-ulasan.destroy');
+Route::resource('ulasan', UlasanController::class)->names([
+    'index'   => 'admin.ulasan.index',
+    'create'  => 'admin.ulasan.create',
+    'store'   => 'admin.ulasan.store',
+    'show'    => 'admin.ulasan.show',
+    'edit'    => 'admin.ulasan.edit',
+    'update'  => 'admin.ulasan.update',
+    'destroy' => 'admin.ulasan.destroy',
+]);
 
 //Form Portofolio
-Route::get('/form-portofolio', [PortofolioController::class, 'formAdmin'])->name('admin.portofolio.form-portofolio');
-Route::get('/admin/portofolio/create', [PortofolioController::class, 'create'])->name('admin.portofolio.create');
-Route::post('/admin/portofolio/store', [PortofolioController::class, 'store'])->name('admin.portofolio.store');
-Route::get('/admin/portofolio/{id}/edit', [PortofolioController::class, 'edit'])->name('admin.portofolio.edit');
-Route::put('/admin/portofolio/{id}', [PortofolioController::class, 'update'])->name('admin.portofolio.update');
-Route::delete('/admin/portofolio/{id}', [PortofolioController::class, 'destroy'])->name('admin.portofolio.destroy');
+Route::resource('portofolio', PortofolioController::class)->names([
+    'index'   => 'admin.portofolio.index',
+    'create'  => 'admin.portofolio.create',
+    'store'   => 'admin.portofolio.store',
+    'show'    => 'admin.portofolio.show',
+    'edit'    => 'admin.portofolio.edit',
+    'update'  => 'admin.portofolio.update',
+    'destroy' => 'admin.portofolio.destroy',
+]);
 
-// Form Management
-Route::get('/form-management', [ManagementController::class, 'formAdmin'])->name('admin.management.form-management');
-Route::post('/admin/management/store', [ManagementController::class, 'store'])->name('admin.management.store');
-Route::delete('/admin/management/delete/{id}', [ManagementController::class, 'destroy'])->name('admin.management.delete');
+//Form Management
+Route::resource('management', ManagementController::class)->names([
+    'index'   => 'admin.management.index',
+    'create'  => 'admin.management.create',
+    'store'   => 'admin.management.store',
+    'show'    => 'admin.management.show',
+    'edit'    => 'admin.management.edit',
+    'update'  => 'admin.management.update',
+    'destroy' => 'admin.management.destroy',
+]);
 
 require __DIR__.'/auth.php';
 

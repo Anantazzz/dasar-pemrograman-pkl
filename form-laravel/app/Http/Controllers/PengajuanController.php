@@ -1,62 +1,96 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use App\Models\Pengajuan;
 
 class PengajuanController extends Controller
 {
-    public function formAdmin()
+    public function index(Request $request)
     {
-    $data = DB::table('pengajuan')->get();
-    return view('admin.pengajuan.form-pengajuan', compact('data'));
+    $query = Pengajuan::query();
+
+    if ($request->filled('search')) {
+        $query->where('proyek', 'like', '%' . $request->search . '%')
+              ->orWhere('penawaran', 'like', '%' . $request->search . '%');
     }
 
-     public function create()
+      $sort = $request->get('sort', 'id_desc');
+    if ($sort === 'id_asc') {
+        $query->orderBy('id', 'asc');
+    } else { 
+        $query->orderBy('id', 'desc');
+    }
+
+    $data = $query->paginate(10); 
+
+    return view('admin.pengajuan.index', compact('data'));
+    }
+
+    public function show($id)
     {
-        return view('admin.pengajuan.create-pengajuan');
+        $pengajuan = Pengajuan::findOrFail($id);
+        return view('admin.pengajuan.show', compact('pengajuan'));
+    }
+
+    public function create()
+    {
+        return view('admin.pengajuan.create');
     }
 
     public function store(Request $request)
     {
-    $request->validate([
-        'proyek' => 'required|string|max:255',
-        'penawaran' => 'required|numeric|min:0',
-        'pesan' => 'nullable|string',
-        'durasi' => 'required|integer|min:1',
-    ]);
+        $request->validate([
+            'proyek'    => 'required|string|max:255',
+            'penawaran' => 'required|numeric|min:0',
+            'pesan'     => 'nullable|string',
+            'durasi'    => 'required|integer|min:1',
+        ]);
 
-    DB::table('pengajuan')->insert([
-        'proyek' => 'Desain Logo Perusahaan Baru',
-        'penawaran' => $request->penawaran,
-        'pesan' => $request->pesan,
-        'durasi' => $request->durasi,
-    ]);
+        Pengajuan::create([
+            'proyek'    => 'Desain Logo Perusahaan Baru', 
+            'penawaran' => $request->penawaran,
+            'pesan'     => $request->pesan,
+            'durasi'    => $request->durasi,
+        ]);
 
-    return redirect('/form-pengajuan')->with('success', 'Pengajuan berhasil disimpan.');
+        return redirect()->route('admin.pengajuan.index')
+                         ->with('success', 'Pengajuan berhasil disimpan.');
     }
 
-     public function edit($id)
+    public function edit($id)
     {
-    $pengajuan = DB::table('pengajuan')->where('id', $id)->first();
-    return view('admin.pengajuan.edit-pengajuan', compact('pengajuan'));
+        $pengajuan = Pengajuan::findOrFail($id);
+        return view('admin.pengajuan.edit', compact('pengajuan'));
     }
 
     public function update(Request $request, $id)
     {
-        DB::table('pengajuan')->where('id', $id)->update([
-            'penawaran' => $request->penawaran,
-            'pesan' => $request->pesan,
-            'durasi' => $request->durasi,
+        $request->validate([
+            'penawaran' => 'required|numeric|min:0',
+            'pesan'     => 'nullable|string',
+            'durasi'    => 'required|integer|min:1',
         ]);
 
-        return redirect()->route('admin.pengajuan.form-pengajuan')->with('success', 'Data berhasil diperbarui!');
+        $pengajuan = Pengajuan::findOrFail($id);
+        $pengajuan->update([
+            'penawaran' => $request->penawaran,
+            'pesan'     => $request->pesan,
+            'durasi'    => $request->durasi,
+        ]);
+
+        return redirect()->route('admin.pengajuan.index')
+                         ->with('success', 'Data berhasil diperbarui!');
     }
 
-     public function destroy($id)
+    public function destroy($id)
     {
-        DB::table('pengajuan')->where('id', $id)->delete();
+        $pengajuan = Pengajuan::findOrFail($id);
+        $pengajuan->deleted_at = now();
+        $pengajuan->save();
 
-        return redirect()->route('admin.pengajuan.form-pengajuan')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('admin.pengajuan.index')
+                         ->with('success', 'Data berhasil dihapus (soft delete)!');
     }
 }

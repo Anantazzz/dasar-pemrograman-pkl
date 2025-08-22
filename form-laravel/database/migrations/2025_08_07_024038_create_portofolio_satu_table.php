@@ -20,6 +20,7 @@ class CreatePortofolioSatuTable extends Migration
             $table->string('keahlian');
             $table->string('warna_tema');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -22,6 +22,7 @@ class CreateLplTable extends Migration
             $table->string('layanan');
             $table->boolean('setuju')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

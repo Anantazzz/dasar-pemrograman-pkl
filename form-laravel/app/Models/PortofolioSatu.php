@@ -15,12 +15,12 @@ class PortofolioSatu extends Model
     'setuju' => 'boolean',
 ];
 
-    public function gambar()
+    public function gambars()
     {
         return $this->hasMany(PortofolioGambar1::class, 'portofolio_id');
     }
 
-    public function item()
+    public function items()
     {
         return $this->hasMany(PortofolioItem::class, 'portofolio_id');
     }

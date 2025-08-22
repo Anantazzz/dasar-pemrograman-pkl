@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePortofolioGambar1Table extends Migration
+class CreateManagementTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreatePortofolioGambar1Table extends Migration
      */
     public function up()
     {
-        Schema::create('portofolio_gambar1', function (Blueprint $table) {
+        Schema::create('management', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('portofolio_id')->constrained('portofolio_satu')->onDelete('cascade');
-            $table->string('file_path');
+             $table->string('judul_tugas', 255)->nullable();
+            $table->text('deskripsi_tugas')->nullable();
+            $table->date('batas_akhir')->nullable();
+            $table->string('status', 100)->nullable();
+            $table->integer('progress')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +32,6 @@ class CreatePortofolioGambar1Table extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portofolio_gambar1');
+        Schema::dropIfExists('management');
     }
 }

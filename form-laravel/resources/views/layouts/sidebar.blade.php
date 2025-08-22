@@ -23,37 +23,37 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('admin.pembayaran.form-pembayaran') }}" class="nav-link">
+              <a href="{{ route('admin.pembayaran.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Pembayaran</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.pengajuan.form-pengajuan') }}" class="nav-link">
+              <a href="{{ route('admin.pengajuan.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Pengajuan</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.proyek.form-proyek') }}" class="nav-link">
+              <a href="{{ route('admin.proyek.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Proyek</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.ulasan.form-ulasan') }}" class="nav-link">
+              <a href="{{ route('admin.ulasan.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Ulasan</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.portofolio.form-portofolio') }}" class="nav-link">
+              <a href="{{ route('admin.portofolio.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Portofolio</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.management.form-management') }}" class="nav-link">
+              <a href="{{ route('admin.management.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-angle-right"></i>
                 <p>Manajemen Tugas</p>
               </a>

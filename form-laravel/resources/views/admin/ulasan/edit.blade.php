@@ -7,7 +7,7 @@
         <h2 class="form-title">Beri Ulasan</h2>
         <p>Untuk <strong>[Nama Pengguna Freelancer/Klien]</strong> pada proyek: <strong>Desain Logo Perusahaan Baru</strong></p>
 
-        <form action="{{ route('admin.ulasan.form-ulasan.update', $ulasan->id) }}" method="POST">
+        <form action="{{ route('admin.ulasan.update', $ulasan->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -30,7 +30,7 @@
             />
 
              <div class="button-group">
-                 <a href="{{ route('admin.ulasan.form-ulasan') }}" class="btn-cancel">Batal</a>
+                 <a href="{{ route('admin.ulasan.index') }}" class="btn-cancel">Batal</a>
                  <button type="submit" class="btn-submit">Update</button>
             </div>
         </form>

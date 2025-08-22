@@ -27,6 +27,10 @@
                 placeholder="Ceritakan pengalaman Anda..."
             />
 
+            @error('ulasan')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+
             <button type="submit" class="btn-submit mt-4">Kirim Ulasan</button>
         </form>
     </div>
