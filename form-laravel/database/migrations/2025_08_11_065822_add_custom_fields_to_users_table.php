@@ -15,7 +15,7 @@ class AddCustomFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
              $table->string('nama')->after('id');
-            $table->enum('tipe_pengguna', ['Klien', 'Freelancer', 'Admin'])->after('password');
+            $table->enum('tipe_pengguna', ['User','Admin'])->after('password');
             $table->string('telepon', 15)->nullable()->after('tipe_pengguna');
             $table->text('bio')->nullable()->after('telepon');
             $table->string('gambar')->nullable()->after('bio');

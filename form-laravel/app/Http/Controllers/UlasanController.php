@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class UlasanController extends Controller
 {
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_ulasan')->only(['index', 'show']);
+        $this->middleware('permission:create_ulasan')->only(['create', 'store']);
+        $this->middleware('permission:edit_ulasan')->only(['edit', 'update']);
+        $this->middleware('permission:delete_ulasan')->only(['destroy']);
+    }
+
     public function index(Request $request)
     {
     $search = $request->input('search');

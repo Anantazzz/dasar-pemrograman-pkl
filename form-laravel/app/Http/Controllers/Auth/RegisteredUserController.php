@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -25,7 +26,7 @@ class RegisteredUserController extends Controller
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password'      => ['required', 'confirmed', Rules\Password::defaults()],
-            'tipe_pengguna' => ['required', 'in:klien,freelancer'],
+            'tipe_pengguna' => ['required', 'in:user,admin'],
             'telepon'       => ['nullable', 'string', 'max:20'],
             'bio'           => ['nullable', 'string', 'max:500'],
             'gambar'        => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
@@ -47,6 +48,8 @@ class RegisteredUserController extends Controller
             'gambar'        => $gambarPath,
             'remember_token'=> Str::random(60),
         ]);
+
+        $user->assignRole('User');
 
         event(new Registered($user));
 

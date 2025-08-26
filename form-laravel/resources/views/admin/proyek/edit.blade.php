@@ -1,116 +1,125 @@
 @extends('layouts.app')
-<link href="{{ asset('css/proyek.css') }}" rel="stylesheet">
 
 @section('content')
-<div class="payment-container">
-    <div class="form-box">
-        <h2 class="form-title">Posting Proyek Baru</h2>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
 
-         <form action="{{ route('admin.proyek.update', $proyek->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+            <div class="card card-primary shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Proyek</h3>
+                </div>
 
-            <x-textarea 
-                label="Detail Proyek" 
-                name="detail" 
-                required 
-                value="{{ $proyek->detail }}"
-            />
+                <form action="{{ route('admin.proyek.update', $proyek->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-            <x-textarea 
-                label="Deskripsi Proyek" 
-                name="deskripsi" 
-                required 
-                value="{{ $proyek->deskripsi }}"
-            />
+                    <div class="card-body">
+                        
+                        {{-- Detail Proyek --}}
+                        <div class="form-group">
+                            <label for="detail">Detail Proyek</label>
+                            <textarea name="detail" id="detail" class="form-control" rows="3" required>{{ old('detail', $proyek->detail) }}</textarea>
+                            @error('detail')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-select 
-                label="Kategori Proyek" 
-                name="kategori" 
-                :options="[
-                    'Penulisan Konten' => 'Penulisan Konten',
-                    'Desain Grafis' => 'Desain Grafis',
-                    'Pengembangan Web' => 'Pengembangan Web'
-                ]" 
-                required
-                selected="{{ $proyek->kategori }}"
-            />
+                        {{-- Deskripsi Proyek --}}
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi Proyek</label>
+                            <textarea name="deskripsi" id="deskripsi" class="form-control" rows="3" required>{{ old('deskripsi', $proyek->deskripsi) }}</textarea>
+                            @error('deskripsi')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-input 
-                label="Anggaran Proyek (IDR)" 
-                name="anggaran" 
-                type="number" 
-                required 
-                min="0" 
-                step="1000"
-                value="{{ $proyek->anggaran }}"
-            />
+                        {{-- Kategori --}}
+                        <div class="form-group">
+                            <label for="kategori">Kategori Proyek</label>
+                            <select name="kategori" id="kategori" class="form-control select2" required>
+                                <option value="Penulisan Konten" {{ old('kategori', $proyek->kategori) == 'Penulisan Konten' ? 'selected' : '' }}>Penulisan Konten</option>
+                                <option value="Desain Grafis" {{ old('kategori', $proyek->kategori) == 'Desain Grafis' ? 'selected' : '' }}>Desain Grafis</option>
+                                <option value="Pengembangan Web" {{ old('kategori', $proyek->kategori) == 'Pengembangan Web' ? 'selected' : '' }}>Pengembangan Web</option>
+                            </select>
+                            @error('kategori')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-input 
-                label="Batas Akhir Penawaran" 
-                name="batas_akhir" 
-                type="datetime-local" 
-                required 
-                value="{{ $proyek->batas_akhir }}"
-            />
+                        {{-- Anggaran --}}
+                        <div class="form-group">
+                            <label for="anggaran">Anggaran Proyek (IDR)</label>
+                            <input type="number" name="anggaran" id="anggaran" class="form-control" 
+                                min="0" step="1000" value="{{ old('anggaran', $proyek->anggaran) }}" required>
+                            @error('anggaran')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-input 
-                label="Lampiran Proyek (PNG, JPG, PDF)" 
-                name="lampiran" 
-                type="file" 
-                accept=".png,.jpg,.jpeg,.pdf" 
-            />
+                        {{-- Deadline --}}
+                        <div class="form-group">
+                            <label for="batas_akhir">Batas Akhir Penawaran</label>
+                            <input type="datetime-local" name="batas_akhir" id="batas_akhir" class="form-control" 
+                                value="{{ old('batas_akhir', $proyek->batas_akhir) }}" required>
+                            @error('batas_akhir')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <div class="form-group mt-3">
-                <label class="block mb-1 font-medium">Lokasi Pengerjaan</label>
-                <label><input type="radio" name="lokasi_pengerjaan" value="remote" required> Remote</label><br>
-                <label><input type="radio" name="lokasi_pengerjaan" value="onsite"> Onsite</label>
+                        {{-- Lampiran --}}
+                        <div class="form-group">
+                            <label for="lampiran">Lampiran Proyek</label>
+                            <input type="file" name="lampiran" id="lampiran" class="form-control-file"
+                                accept=".png,.jpg,.jpeg,.pdf">
+                            <small class="form-text text-muted">Biarkan kosong jika tidak ingin mengubah lampiran.</small>
+                            @error('lampiran')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Lokasi --}}
+                        <div class="form-group">
+                            <label>Lokasi Pengerjaan</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" 
+                                    name="lokasi_pengerjaan" id="remote" value="remote" 
+                                    {{ old('lokasi_pengerjaan', $proyek->lokasi_pengerjaan) == 'remote' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="remote">Remote</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" 
+                                    name="lokasi_pengerjaan" id="onsite" value="onsite" 
+                                    {{ old('lokasi_pengerjaan', $proyek->lokasi_pengerjaan) == 'onsite' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="onsite">Onsite</label>
+                            </div>
+                            @error('lokasi_pengerjaan')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{{ route('admin.proyek.index') }}" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary">Update Proyek</button>
+                    </div>
+                </form>
             </div>
 
-            <div class="button-group">
-                 <a href="{{ route('admin.proyek.index') }}" class="btn-cancel">Batal</a>
-                 <button type="submit" class="btn-submit">Update</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-<style>
-    .button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-submit {
-    flex: 1; 
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #218838;
-}
-
-.btn-cancel {
-    flex: 1; 
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #ccc;
-    color: #000;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-cancel:hover {
-    background-color: #999;
-}
-</style>
 @endsection
+
+@push('scripts')
+<script>
+    $(function () {
+        $('#kategori').select2({
+            placeholder: "Pilih Kategori Proyek",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+@endpush

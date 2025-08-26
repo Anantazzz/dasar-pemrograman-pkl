@@ -7,6 +7,16 @@ use App\Models\Management;
 
 class ManagementController extends Controller
 {
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_management')->only(['index', 'show']);
+        $this->middleware('permission:create_management')->only(['create', 'store']);
+        $this->middleware('permission:edit_management')->only(['edit', 'update']);
+        $this->middleware('permission:delete_management')->only(['destroy']);
+    }
+    
    public function index(Request $request)
     {
     $search = $request->input('search');

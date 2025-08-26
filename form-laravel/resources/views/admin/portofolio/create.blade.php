@@ -2,6 +2,11 @@
 <link href="{{ asset('css/proyek.css') }}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+<!-- FilePond core CSS -->
+<link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+<!-- FilePond image preview plugin CSS -->
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet" />
+
 @section('content')
 <div class="payment-container">
     <div class="form-box">
@@ -29,11 +34,12 @@
 
             <x-input label="Warna Tema" name="warna_tema" type="color" :value="old('warna_tema', $portofolio->warna_tema ?? '#6A0DAD')" />
 
-            <div class="mb-4">
-                <x-label for="gambar" value="Upload Gambar Proyek" />
-                <input type="file" name="gambar[]" accept="image/*" multiple class="mb-2">
-                <small class="block text-gray-500">Max 5MB per gambar</small>
-            </div>
+           <div class="mt-3">
+                <label for="gambar" class="font-medium">Upload Gambar</label>
+                <input type="file" name="gambar[]" id="gambar" multiple>
+                <small class="text-gray-500">Maksimal 5 file, masing-masing 5MB</small>
+                @error('gambar')<small class="text-red-500">{{ $message }}</small>@enderror
+            </div>
 
             <h3 class="form-subtitle mt-4">Item Proyek</h3>
             <div class="flex flex-col md:flex-row gap-2 mb-2">
@@ -90,17 +96,43 @@
     </div>
 </div>
 
+{{-- JS --}}
+{{-- JS --}}
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.select2').select2({
-        placeholder: "Pilih opsi",
-        allowClear: true,
-        width: '100%'
-    });
-});
 
+<!-- FilePond core JS -->
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<!-- FilePond image preview plugin JS -->
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<!-- (opsional) plugin validate type -->
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+
+<script>
+    $(function () {
+        // Register plugin
+        FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+
+        // Buat instance
+        FilePond.create(document.querySelector('#gambar'), {
+            acceptedFileTypes: ['image/*'],
+            allowMultiple: true,
+            maxFiles: 5,
+            storeAsFile: true,
+            labelIdle: 'Drag & Drop gambar atau <span class="filepond--label-action">Pilih</span>'
+        });
+    });
+
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Pilih opsi",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+
+<script>
 let proyekList = [];
 function tambahItem() {
     const judul = document.getElementById('judulProyek').value;

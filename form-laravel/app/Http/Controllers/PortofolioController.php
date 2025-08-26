@@ -12,6 +12,16 @@ use App\Models\Lpl;
 
 class PortofolioController extends Controller
 {
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_portofolio')->only(['index', 'show']);
+        $this->middleware('permission:create_portofolio')->only(['create', 'store']);
+        $this->middleware('permission:edit_portofolio')->only(['edit', 'update']);
+        $this->middleware('permission:delete_portofolio')->only(['destroy']);
+    }
+
    public function index(Request $request)
     {
     $search = $request->input('search');
@@ -74,7 +84,7 @@ class PortofolioController extends Controller
                     $path = $file->store('portofolio_gambar', 'public');
                     PortofolioGambar1::create([
                         'portofolio_id' => $portofolio->id,
-                        'file_path' => $path,
+                        'file_path'     => $path,
                     ]);
                 }
             }
@@ -89,7 +99,7 @@ class PortofolioController extends Controller
                     ]);
                 }
             }
-            
+
             $portofolio->lpl()->create([
                 'longitude'     => $request->longitude,
                 'latitude'      => $request->latitude,
@@ -105,13 +115,10 @@ class PortofolioController extends Controller
                 ->with('success', 'Portofolio berhasil disimpan!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()
-                ->back()
-                ->withInput()
+            return redirect()->back()->withInput()
                 ->withErrors(['error' => 'Terjadi kesalahan: '.$e->getMessage()]);
         }
     }
-
     public function edit($id)
     {
         $portofolio = PortofolioSatu::with(['lpl', 'items', 'gambars'])->findOrFail($id);

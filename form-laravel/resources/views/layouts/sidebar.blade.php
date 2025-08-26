@@ -17,7 +17,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-user-cog"></i>
             <p>
-              ADMIN
+              FORM
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -64,8 +64,35 @@
                 <p>Registrasi</p>
               </a>
             </li>
+            {{-- Tampilkan khusus admin --}}
+            @role('admin')
+              <li class="nav-item">
+                <a href="{{ route('roles.index') }}" class="nav-link">
+                  <i class="nav-icon fas fa-lock"></i>
+                  <p>Manajemen Role</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('permissions.index') }}" class="nav-link">
+                  <i class="nav-icon fas fa-key"></i>
+                  <p>Manajemen Permission</p>
+                </a>
+              </li>
+            @endrole
           </ul>
         </li>
+
+                {{-- Logout --}}
+        <li class="nav-item mt-3">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="nav-link btn btn-link text-left w-100" style="padding-left: 10px;">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>Logout</p>
+            </button>
+          </form>
+        </li>
+        
       </ul>
     </nav>
   </div>

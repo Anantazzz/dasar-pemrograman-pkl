@@ -17,13 +17,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         $this->call([
+            RolePermissionSeeder::class,
             UserSeeder::class,
             ManagementSeeder::class,
             PembayaranSeeder::class,
             PengajuanSeeder::class,
             UlasanSeeder::class,
             ProyekSeeder::class,
-            PortofolioSeeder::class
+            PortofolioSeeder::class,
         ]);
     }
 }

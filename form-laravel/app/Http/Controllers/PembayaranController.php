@@ -7,7 +7,17 @@ use App\Models\Pembayaran;
 
 class PembayaranController extends Controller
 {
-   public function index(Request $request)
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_pembayaran')->only(['index', 'show']);
+        $this->middleware('permission:create_pembayaran')->only(['create', 'store']);
+        $this->middleware('permission:edit_pembayaran')->only(['edit', 'update']);
+        $this->middleware('permission:delete_pembayaran')->only(['destroy']);
+    }
+
+    public function index(Request $request)
     {
     $query = Pembayaran::query();
 

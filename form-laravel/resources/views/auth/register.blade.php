@@ -59,12 +59,12 @@
                     <label><strong>Tipe Pengguna</strong></label>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tipe_pengguna" value="klien" {{ old('tipe_pengguna') == 'klien' ? 'checked' : '' }} required>
-                            <label class="form-check-label">Klien</label>
+                            <input class="form-check-input" type="radio" name="tipe_pengguna" value="user" {{ old('tipe_pengguna') == 'user' ? 'checked' : '' }} required>
+                            <label class="form-check-label">User</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="tipe_pengguna" value="freelancer" {{ old('tipe_pengguna') == 'freelancer' ? 'checked' : '' }}>
-                            <label class="form-check-label">Freelancer</label>
+                            <input class="form-check-input" type="radio" name="tipe_pengguna" value="admin" {{ old('tipe_pengguna') == 'admin' ? 'checked' : '' }}>
+                            <label class="form-check-label">Admin</label>
                         </div>
                     </div>
                 </div>

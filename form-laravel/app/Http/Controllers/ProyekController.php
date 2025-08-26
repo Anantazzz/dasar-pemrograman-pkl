@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ProyekController extends Controller
 {
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_proyek')->only(['index', 'show']);
+        $this->middleware('permission:create_proyek')->only(['create', 'store']);
+        $this->middleware('permission:edit_proyek')->only(['edit', 'update']);
+        $this->middleware('permission:delete_proyek')->only(['destroy']);
+    }
+
     public function index(Request $request)
     {
     $search = $request->input('search');

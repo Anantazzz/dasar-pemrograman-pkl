@@ -7,6 +7,16 @@ use App\Models\Pengajuan;
 
 class PengajuanController extends Controller
 {
+    public function __construct()
+    {
+     $this->middleware('auth');
+
+        $this->middleware('permission:view_pengajuan')->only(['index', 'show']);
+        $this->middleware('permission:create_pengajuan')->only(['create', 'store']);
+        $this->middleware('permission:edit_pengajuan')->only(['edit', 'update']);
+        $this->middleware('permission:delete_pengajuan')->only(['destroy']);
+    }
+
     public function index(Request $request)
     {
     $query = Pengajuan::query();

@@ -1,213 +1,177 @@
 @extends('layouts.app')
+<link href="{{ asset('css/proyek.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- FilePond CSS -->
+<link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet" />
 
 @section('content')
-    <form action="{{ route('admin.portofolio.update', $portofolio->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+<div class="payment-container">
+    <div class="form-box">
+        <h2 class="form-title">Edit Portofolio</h2>
 
-        <h2 class="text-2xl font-bold mb-4">Edit Portofolio</h2>
+        <form action="{{ route('admin.portofolio.update', $portofolio->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-        <!-- Judul -->
-        <div class="mb-4">
-            <x-label for="judul" value="Judul Portofolio" />
-            <x-input name="judul" id="judul" :value="old('judul', $portofolio->judul_portofolio)" />
-        </div>
+            <x-input label="Judul Portofolio" name="judul" type="text" :value="old('judul', $portofolio->judul_portofolio)" required />
+            @error('judul')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
 
-        <!-- Ringkasan -->
-        <div class="mb-4">
-            <x-label for="ringkasan" value="Ringkasan Portofolio" />
-            <x-input name="ringkasan" id="ringkasan" :value="old('ringkasan', $portofolio->ringkasan)" />
-        </div>
+            <x-textarea label="Ringkasan Portofolio" name="ringkasan" rows="5">{{ old('ringkasan', $portofolio->ringkasan) }}</x-textarea>
+            @error('ringkasan')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
 
-        <!-- Keahlian -->
-        <div class="mb-4">
-            <x-label for="keahlian" value="Keahlian" />
-            <x-select 
-                name="keahlian[]" 
-                multiple
-                :options="[
-                    'Pengembangan Aplikasi Mobile' => 'Pengembangan Aplikasi Mobile',
-                    'Penulisan Konten' => 'Penulisan Konten',
-                    'Pemasaran Digital' => 'Pemasaran Digital',
-                    'Desain UI/UX' => 'Desain UI/UX',
-                    'SEO' => 'SEO'
-                ]"
-                :selected="old('keahlian', is_array($portofolio->keahlian) 
-                    ? $portofolio->keahlian 
-                    : explode(',', $portofolio->keahlian ?? '')
-                )"
-            />
-        </div>
-
-        <!-- Warna Tema -->
-        <div class="mb-4">
-            <x-label for="warna_tema" value="Warna Tema Portofolio" />
-            <x-input 
-                type="color" 
-                name="warna_tema" 
-                id="warna_tema" 
-                value="{{ old('warna_tema', $portofolio->warna_tema ?? '#6A0DAD') }}" 
-            />
-        </div>
-
-        <!-- Gambar -->
-        <div class="mb-4">
-            <x-label for="gambar" value="Upload Gambar Proyek" />
-            <input type="file" name="gambar[]" accept="image/*" multiple class="mb-2">
-            <small class="block text-gray-500">Max 5MB per gambar</small>
-
-            @if(!empty($portofolio->gambars))
-                <div class="mt-2 flex gap-2">
-                    @foreach($portofolio->gambars as $img)
-                        <img src="{{ asset('storage/'.$img->file_path) }}" alt="Gambar" class="w-20 h-20 object-cover rounded">
+            <!-- Keahlian -->
+            <div class="form-group mt-3">
+                <label class="block mb-1 font-medium">Keahlian</label>
+                <select name="keahlian[]" class="select2 w-full border rounded p-2" multiple>
+                    @foreach(['Pengembangan Aplikasi Mobile','Penulisan Konten','Pemasaran Digital','Desain UI/UX','SEO'] as $skill)
+                        <option value="{{ $skill }}" 
+                            {{ in_array($skill, old('keahlian', is_array($portofolio->keahlian) ? $portofolio->keahlian : explode(',', $portofolio->keahlian ?? ''))) ? 'selected' : '' }}>
+                            {{ $skill }}
+                        </option>
                     @endforeach
+                </select>
+            </div>
+
+            <x-input label="Warna Tema" name="warna_tema" type="color" :value="old('warna_tema', $portofolio->warna_tema ?? '#6A0DAD')" />
+
+            <!-- Gambar -->
+            <div class="mt-3">
+                <label for="gambar" class="font-medium">Upload Gambar</label>
+                <input type="file" name="gambar[]" id="gambar" multiple>
+                <small class="text-gray-500">Maksimal 5 file, masing-masing 5MB</small>
+
+                @if(!empty($portofolio->gambars))
+                    <div class="mt-2 flex gap-2">
+                        @foreach($portofolio->gambars as $img)
+                            <img src="{{ asset('storage/'.$img->file_path) }}" class="w-20 h-20 object-cover rounded" />
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <h3 class="form-subtitle mt-4">Item Proyek</h3>
+            <div class="flex flex-col md:flex-row gap-2 mb-2">
+                <x-input placeholder="Judul Proyek" id="judulProyek" />
+                <x-input placeholder="Deskripsi Proyek" id="deskripsiProyek" />
+                <x-input placeholder="URL Proyek" type="url" id="urlProyek" />
+                <div class="flex items-end">
+                    <button type="button" class="btn btn-secondary" onclick="tambahItem()">Tambah Item</button>
                 </div>
-            @endif
-        </div>
-
-        <hr class="my-4">
-
-        <!-- Item Proyek -->
-        <h3 class="text-lg font-semibold mb-2">Item Proyek Anda</h3>
-        <div id="proyek-form" class="flex flex-col md:flex-row gap-2 mb-2">
-            <div class="flex-1">
-                <label for="judulProyek">Judul Proyek</label>
-                <input type="text" id="judulProyek" placeholder="Nama proyek" class="form-control" />
             </div>
-            <div class="flex-1">
-                <label for="deskripsiProyek">Deskripsi Proyek</label>
-                <input type="text" id="deskripsiProyek" placeholder="Ringkasan proyek" class="form-control" />
-            </div>
-            <div class="flex-1">
-                <label for="urlProyek">URL Proyek</label>
-                <input type="url" id="urlProyek" placeholder="https://www.example.com" class="form-control" />
-            </div>
-            <div class="flex items-end">
-                <button type="button" class="btn btn-secondary" onclick="tambahItems()">Tambah Item</button>
-            </div>
-        </div>
 
-        <table border="1" id="tabelProyek" class="w-full mb-4">
-            <thead>
-                <tr>
-                    <th>Judul</th>
-                    <th>Deskripsi</th>
-                    <th>URL</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <input type="hidden" name="data_proyek" id="dataProyek">
-
-        <hr class="my-4">
-
-        <!-- Lokasi -->
-        <h3 class="text-lg font-semibold">Lokasi Utama (Peta)</h3>
-        <div class="mb-2">
-            <x-label for="longitude" value="Longitude" />
-            <x-input type="text" name="longitude" id="longitude" value="{{ old('longitude', $portofolio->lpl->longitude) }}" />
-        </div>
-        <div class="mb-2">
-            <x-label for="latitude" value="Latitude" />
-            <x-input type="text" name="latitude" id="latitude" value="{{ old('latitude', $portofolio->lpl->latitude) }}" />
-        </div>
-        <button type="button" class="btn btn-info mb-3" onclick="tampilkanLokasi()">Cek Lokasi</button>
-        <p id="lokasiOutput" class="text-sm text-gray-600 mt-2"></p>
-
-        <hr class="my-4">
-
-        <!-- Persetujuan -->
-        <h3 class="text-lg font-semibold">Persetujuan</h3>
-        <div class="mb-2">
-            <label class="flex items-center">
-                <input type="checkbox" name="terbuka" {{ old('terbuka', (bool)($portofolio->lpl->terbuka ?? false)) ? 'checked' : '' }} required>
-                Saya sedang terbuka untuk menerima klien baru
-            </label>
-        </div>
-
-        @php
-            $layananArray = json_decode($portofolio->lpl->layanan ?? '[]', true);
-        @endphp
-
-        <div class="mb-2">
-            <x-label value="Layanan yang Ditawarkan" />
-            <div class="flex flex-col md:flex-row gap-4">
-                <label>
-                    <input type="checkbox" name="layanan[]" value="Konsultasi" {{ in_array('Konsultasi', old('layanan', $layananArray)) ? 'checked' : '' }}>
-                    Konsultasi
-                </label>
-                <label>
-                    <input type="checkbox" name="layanan[]" value="Maintenance" {{ in_array('Maintenance', old('layanan', $layananArray)) ? 'checked' : '' }}>
-                    Maintenance
-                </label>
-                <label>
-                    <input type="checkbox" name="layanan[]" value="Pelatihan" {{ in_array('Pelatihan', old('layanan', $layananArray)) ? 'checked' : '' }}>
-                    Pelatihan
-                </label>
-            </div>
-        </div>
-
-        <label class="block mt-4">
-            <input type="checkbox" name="setuju" {{ old('setuju', (bool)($portofolio->lpl->setuju ?? false)) ? 'checked' : '' }} required>
-            Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a>.
-        </label>
-
-        <button type="submit" class="btn btn-primary mt-3">Update Portofolio</button>
-    </form>
-
-    <script>
-        let proyekList = @json(
-            $portofolio->items->map(function($item) {
-                return [
-                    'judul' => $item->judul_proyek,
-                    'deskripsi' => $item->deskripsi_singkat,
-                    'url' => $item->url_proyek
-                ];
-            })
-        );
-
-        function tambahItem() {
-            const judul = document.getElementById('judulProyek').value;
-            const deskripsi = document.getElementById('deskripsiProyek').value;
-            const url = document.getElementById('urlProyek').value;
-
-            if (judul && deskripsi) {
-                proyekList.push({ judul, deskripsi, url });
-                updateTabel();
-                document.getElementById('judulProyek').value = '';
-                document.getElementById('deskripsiProyek').value = '';
-                document.getElementById('urlProyek').value = '';
-            }
-        }
-
-        function updateTabel() {
-            const tbody = document.querySelector('#tabelProyek tbody');
-            tbody.innerHTML = '';
-            proyekList.forEach((item, index) => {
-                const row = `
+            <table class="table table-bordered w-full mb-4" id="tabelProyek">
+                <thead>
                     <tr>
-                        <td>${item.judul}</td>
-                        <td>${item.deskripsi}</td>
-                        <td><a href="${item.url}" target="_blank">${item.url}</a></td>
-                        <td><a href="#" onclick="hapusItem(${index})">Hapus</a></td>
-                    </tr>`;
-                tbody.innerHTML += row;
-            });
-            document.getElementById('dataProyek').value = JSON.stringify(proyekList);
-        }
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>URL</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <input type="hidden" name="data_proyek" id="dataProyek">
 
-        function hapusItem(index) {
-            proyekList.splice(index, 1);
+            <h3 class="form-subtitle mt-4">Lokasi Utama (Peta)</h3>
+            <x-input label="Longitude" name="longitude" :value="old('longitude', $portofolio->lpl->longitude)" />
+            <x-input label="Latitude" name="latitude" :value="old('latitude', $portofolio->lpl->latitude)" />
+            <button type="button" class="btn btn-info mb-3" onclick="tampilkanLokasi()">Cek Lokasi</button>
+            <p id="lokasiOutput" class="text-sm text-gray-600 mt-2"></p>
+
+            <h3 class="form-subtitle mt-4">Persetujuan</h3>
+            <label class="flex items-center mb-2">
+                <input type="checkbox" name="terbuka" value="1" class="mr-2" 
+                    {{ old('terbuka', $portofolio->lpl->terbuka ?? false) ? 'checked' : '' }}>
+                Saya terbuka menerima klien baru
+            </label>
+
+            <div class="form-group">
+                <label class="block mb-1 font-medium">Layanan yang Ditawarkan</label>
+                @php $layananArray = json_decode($portofolio->lpl->layanan ?? '[]', true); @endphp
+                <select name="layanan[]" class="select2 w-full border rounded p-2" multiple>
+                    @foreach(['Konsultasi','Maintenance','Pelatihan'] as $layanan)
+                        <option value="{{ $layanan }}" {{ in_array($layanan, old('layanan', $layananArray)) ? 'selected' : '' }}>
+                            {{ $layanan }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <label class="block mt-4">
+                <input type="checkbox" name="setuju" {{ old('setuju', $portofolio->lpl->setuju ?? false) ? 'checked' : '' }} required>
+                Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a>.
+            </label>
+
+            <button type="submit" class="btn-submit mt-3">Update Portofolio</button>
+        </form>
+    </div>
+</div>
+
+<!-- FilePond & Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+
+<script>
+    $(function () {
+        FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+        FilePond.create(document.querySelector('#gambar'), {
+            acceptedFileTypes: ['image/*'],
+            allowMultiple: true,
+            maxFiles: 5,
+            storeAsFile: true,
+            labelIdle: 'Drag & Drop gambar atau <span class="filepond--label-action">Pilih</span>'
+        });
+
+        $('.select2').select2({ placeholder: "Pilih opsi", allowClear: true, width: '100%' });
+    });
+
+    let proyekList = @json($portofolio->items->map(fn($i) => [
+        'judul' => $i->judul_proyek,
+        'deskripsi' => $i->deskripsi_singkat,
+        'url' => $i->url_proyek
+    ]));
+
+    function tambahItem() {
+        const judul = document.getElementById('judulProyek').value;
+        const deskripsi = document.getElementById('deskripsiProyek').value;
+        const url = document.getElementById('urlProyek').value;
+
+        if (judul && deskripsi) {
+            proyekList.push({ judul, deskripsi, url });
             updateTabel();
+            document.getElementById('judulProyek').value = '';
+            document.getElementById('deskripsiProyek').value = '';
+            document.getElementById('urlProyek').value = '';
         }
+    }
 
-        function tampilkanLokasi() {
-            const lat = document.getElementById('latitude').value;
-            const long = document.getElementById('longitude').value;
-            document.getElementById('lokasiOutput').innerText = `Lokasi: ${lat}, ${long}`;
-        }
+    function updateTabel() {
+        const tbody = document.querySelector('#tabelProyek tbody');
+        tbody.innerHTML = '';
+        proyekList.forEach((item, i) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${item.judul}</td>
+                    <td>${item.deskripsi}</td>
+                    <td><a href="${item.url}" target="_blank">${item.url}</a></td>
+                    <td><a href="#" onclick="hapusItem(${i})">Hapus</a></td>
+                </tr>`;
+        });
+        document.getElementById('dataProyek').value = JSON.stringify(proyekList);
+    }
 
-        updateTabel();
-    </script>
+    function hapusItem(i){ proyekList.splice(i, 1); updateTabel(); }
+    function tampilkanLokasi(){
+        const lat = document.getElementById('latitude').value;
+        const long = document.getElementById('longitude').value;
+        document.getElementById('lokasiOutput').innerText = `Lokasi: ${lat}, ${long}`;
+    }
+
+    updateTabel();
+</script>
 @endsection

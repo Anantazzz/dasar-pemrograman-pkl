@@ -11,46 +11,49 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::firstOrCreate(
+        $admin = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Admin Form',
                 'email_verified_at' => now(),
                 'password' => Hash::make('90909090'),
-                'tipe_pengguna' => 'Admin',
+                'tipe_pengguna' => 'admin',
                 'telepon' => '08123456789',
                 'bio' => '-',
                 'gambar' => '1.jpg',
                 'remember_token' => Str::random(10),
             ]
         );
+        $admin->assignRole('admin'); 
 
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'unga@gmail.com'],
             [
                 'name' => 'Unga',
                 'email_verified_at' => now(),
                 'password' => Hash::make('1717171717'),
-                'tipe_pengguna' => 'Klien',
+                'tipe_pengguna' => 'user',
                 'telepon' => '08123456788',
                 'bio' => '-',
                 'gambar' => '2.jpg',
                 'remember_token' => Str::random(10),
             ]
         );
+        $user->assignRole('user'); 
 
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'ehsan@gmail.com'],
             [
                 'name' => 'Ehsan',
                 'email_verified_at' => now(),
                 'password' => Hash::make('00000000'),
-                'tipe_pengguna' => 'Freelancer',
+                'tipe_pengguna' => 'user',
                 'telepon' => '08123456787',
-                'bio' => 'Freelancer sukses ibu kota',
+                'bio' => '',
                 'gambar' => '3.jpg',
                 'remember_token' => Str::random(10),
             ]
         );
+        $user->assignRole('user'); 
     }
 }

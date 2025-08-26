@@ -1,121 +1,123 @@
 @extends('layouts.app')
 
-<link href="{{ asset('css/proyek.css') }}" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-
 @section('content')
-<div class="payment-container">
-    <div class="form-box">
-        <h2 class="form-title">Posting Proyek Baru</h2>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            
+            <div class="card card-primary shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title">Posting Proyek Baru</h3>
+                </div>
 
-        <form method="POST" action="{{ route('admin.proyek.store') }}" enctype="multipart/form-data">
-            @csrf
+                <form method="POST" action="{{ route('admin.proyek.store') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="card-body">
+                        
+                        {{-- Detail Proyek --}}
+                        <div class="form-group">
+                            <label for="detail">Detail Proyek</label>
+                            <textarea name="detail" id="detail" class="form-control" rows="3" required>{{ old('detail') }}</textarea>
+                            @error('detail')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-textarea 
-                label="Detail Proyek" 
-                name="detail" 
-                required
-            >{{ old('detail') }}</x-textarea>
-            @error('detail')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                        {{-- Deskripsi Proyek --}}
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi Proyek</label>
+                            <textarea name="deskripsi" id="deskripsi" class="form-control" rows="3" required>{{ old('deskripsi') }}</textarea>
+                            @error('deskripsi')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <x-textarea 
-                label="Deskripsi Proyek" 
-                name="deskripsi" 
-                required
-            >{{ old('deskripsi') }}</x-textarea>
-            @error('deskripsi')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                        {{-- Kategori --}}
+                        <div class="form-group">
+                            <label for="kategori">Kategori Proyek</label>
+                            <select name="kategori" id="kategori" class="form-control select2" required>
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="Penulisan Konten" {{ old('kategori')=='Penulisan Konten' ? 'selected' : '' }}>Penulisan Konten</option>
+                                <option value="Desain Grafis" {{ old('kategori')=='Desain Grafis' ? 'selected' : '' }}>Desain Grafis</option>
+                                <option value="Pengembangan Web" {{ old('kategori')=='Pengembangan Web' ? 'selected' : '' }}>Pengembangan Web</option>
+                            </select>
+                            @error('kategori')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-            <div class="form-group mt-3">
-                <label for="kategori" class="block mb-1 font-medium">Kategori Proyek</label>
-                <select name="kategori" id="kategori" class="select2 w-full border rounded p-2" required>
-                    <option value="" disabled selected>Pilih Kategori Proyek</option>
-                    <option value="Penulisan Konten" {{ old('kategori')=='Penulisan Konten' ? 'selected' : '' }}>Penulisan Konten</option>
-                    <option value="Desain Grafis" {{ old('kategori')=='Desain Grafis' ? 'selected' : '' }}>Desain Grafis</option>
-                    <option value="Pengembangan Web" {{ old('kategori')=='Pengembangan Web' ? 'selected' : '' }}>Pengembangan Web</option>
-                </select>
-                @error('kategori')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                        {{-- Anggaran --}}
+                        <div class="form-group">
+                            <label for="anggaran">Anggaran Proyek (IDR)</label>
+                            <input type="number" name="anggaran" id="anggaran" class="form-control" 
+                                min="0" step="1000" value="{{ old('anggaran') }}" required>
+                            @error('anggaran')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Deadline --}}
+                        <div class="form-group">
+                            <label for="batas_akhir">Batas Akhir Penawaran</label>
+                            <input type="datetime-local" name="batas_akhir" id="batas_akhir" class="form-control" 
+                                value="{{ old('batas_akhir') }}" required>
+                            @error('batas_akhir')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Lampiran --}}
+                        <div class="form-group">
+                            <label for="lampiran">Lampiran Proyek</label>
+                            <input type="file" name="lampiran" id="lampiran" 
+                                class="form-control-file" 
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.zip">
+                            <small class="form-text text-muted">Format: PDF, DOCX, XLSX, ZIP</small>
+                            @error('lampiran')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Lokasi --}}
+                        <div class="form-group">
+                            <label>Lokasi Pengerjaan</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" 
+                                    name="lokasi_pengerjaan" id="remote" value="remote" 
+                                    {{ old('lokasi_pengerjaan')=='remote' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="remote">Remote</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" 
+                                    name="lokasi_pengerjaan" id="onsite" value="onsite" 
+                                    {{ old('lokasi_pengerjaan')=='onsite' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="onsite">Onsite</label>
+                            </div>
+                            @error('lokasi_pengerjaan')
+                                <span class="text-danger small">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-primary">Posting Proyek</button>
+                    </div>
+                </form>
             </div>
 
-            <x-input 
-                label="Anggaran Proyek (IDR)" 
-                name="anggaran" 
-                type="number" 
-                required 
-                min="0" 
-                step="1000"
-                :value="old('anggaran')"
-            />
-            @error('anggaran')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-
-            <x-input 
-                label="Batas Akhir Penawaran" 
-                name="batas_akhir" 
-                type="datetime-local" 
-                required
-                :value="old('batas_akhir')"
-            />
-            @error('batas_akhir')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-
-            <x-input 
-                label="Lampiran Proyek (PDF, DOCX, XLSX, ZIP)" 
-                name="lampiran" 
-                type="file" 
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.zip" 
-                id="lampiran"
-            />
-            @error('lampiran')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-
-            <div class="form-group mt-3">
-                <label class="block mb-1 font-medium">Lokasi Pengerjaan</label>
-                <label>
-                    <input type="radio" name="lokasi_pengerjaan" value="remote" {{ old('lokasi_pengerjaan')=='remote' ? 'checked' : '' }} required> Remote
-                </label><br>
-                <label>
-                    <input type="radio" name="lokasi_pengerjaan" value="onsite" {{ old('lokasi_pengerjaan')=='onsite' ? 'checked' : '' }}> Onsite
-                </label>
-                @error('lokasi_pengerjaan')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn-submit mt-4">Posting Proyek</button>
-        </form>
+        </div>
     </div>
 </div>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-
 <script>
-    $(document).ready(function() {
-    
+    $(function () {
         $('#kategori').select2({
             placeholder: "Pilih Kategori Proyek",
             allowClear: true,
             width: '100%'
-        });
-
-        FilePond.create(document.querySelector('#lampiran'), {
-            allowMultiple: false,
-            allowFileTypeValidation: true,
-            acceptedFileTypes: ['image/png', 'image/jpeg', 'application/pdf'],
-            labelIdle: 'Drag & Drop atau <span class="filepond--label-action">Pilih File</span>'
         });
     });
 </script>
